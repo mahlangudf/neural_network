@@ -1,5 +1,6 @@
 from flask import Flask
 import numpy as np
+import itertools
 app = Flask(__name__)
 
 
@@ -16,30 +17,35 @@ def hello_world():
     num_inputs = 3
     num_hidden_layers = 2
     num_hidden_neurons = 3
+    y_spacing = 100
+    start_y = 100
+    distance = num_hidden_neurons*num_hidden_layers*y_spacing
     num_outputs = 2
     input_layer = ''
     hidden_layer = ''
     cy = 0
     for i in range(num_inputs):
         cy += 100
-        input_layer += neuron(150, cy, 20)
+        #input_layer += neuron(150, cy, 20)
 
-    cx = 150
-    layer_data = {}
-    for k in range(num_hidden_layers):
-        cx += 150
-        cy2 = 0
-        for j in range(num_hidden_neurons):
-            cy2 += 100
-            hidden_layer += neuron(cx, cy2, 20)
-            node_name = 'node_{layer_number}_{node_number}'.format(layer_number=k, node_number=j)
-            layer_data[node_name] = (cx, cy2)
+    intervals = list(np.arange(start_y, distance + start_y, y_spacing))
+    cy0 = start_y
+    intervals_y = []
+    intervals_x = []
+    cx0 = 350
+    for i, value in enumerate(intervals):
+        cy0 += y_spacing
+        if i%num_hidden_neurons == 0:
+            cy0 = start_y
+            if i > 0:
+                cx0 += 150
+        intervals_y.append(cy0)
+        intervals_x.append(cx0)
+        hidden_layer += neuron(cx0, cy0, 20)
+    coordinates = list(itertools.product(intervals_x, intervals_y))
+    for c, c_value in coordinates:
+        pass
 
-    m = 0
-    for n in range(num_hidden_layers):
-        node_name0 = 'node_{layer_number}_{node_number}'.format(layer_number=n, node_number=m)
-        for m in range(num_hidden_neurons):
-            pass
 
 
     returnStr = ''
