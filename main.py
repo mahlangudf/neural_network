@@ -42,7 +42,9 @@ def hello_world():
         intervals_y.append(cy0)
         intervals_x.append(cx0)
         hidden_layer += neuron(cx0, cy0, 20)
-    coordinates = list(itertools.product(intervals_x, intervals_y))
+    coordinates = list(set(list(itertools.product(intervals_x, intervals_y))))
+    print(coordinates)
+
     for c, c_value in coordinates:
         pass
 
